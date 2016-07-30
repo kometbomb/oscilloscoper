@@ -1,5 +1,5 @@
 # oscilloscoper
-Creates oscilloscope videos from WAV files.
+Creates oscilloscope videos from WAV files. Output is a raw H.264 stream. You need to use e.g. ffmpeg to mux the video stream with the audio in a playable container like MP4.
 
 ##Usage
 
