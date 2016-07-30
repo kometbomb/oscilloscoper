@@ -16,6 +16,7 @@ public:
 	Screen(int width, int height);
 	~Screen();
 	void addWave(const char *filename, float yScale);
+	int getWaveCount() const;
 	void setMargin(int margin);
 	void setWidth(int width);
 	void setHeight(int height);

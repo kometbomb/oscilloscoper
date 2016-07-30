@@ -69,3 +69,9 @@ void Screen::setHeight(int height)
 {
 	mWidth = height;
 }
+
+
+int Screen::getWaveCount() const
+{
+	return mWaves.size();
+}
