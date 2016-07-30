@@ -1,0 +1,24 @@
+#pragma once
+
+#include <vector>
+
+class Wave;
+class Oscilloscope;
+class SDL_Renderer;
+
+class Screen 
+{
+	std::vector<Wave*> mWaves;
+	std::vector<Oscilloscope*> mOscilloscopes;
+	int mMargin;
+	int mWidth, mHeight;
+public:
+	Screen(int width, int height);
+	~Screen();
+	void addWave(const char *filename, float yScale);
+	void setMargin(int margin);
+	void setWidth(int width);
+	void setHeight(int height);
+	const float getLengthMs() const;
+	void draw(float positionMs, SDL_Renderer *renderer);
+};
