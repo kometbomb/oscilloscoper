@@ -11,10 +11,6 @@ int main(int argc, char **argv)
 	float yScale = 1.0f;
 	char filename[1000] = "Output.h264";
 	
-	SDL_Init(SDL_INIT_VIDEO);
-	
-	SDL_Surface *surface = SDL_CreateRGBSurface(0, width, height, 32, 0xff, 0xff00, 0xff0000, 0);
-	SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 	Screen screen(width, height);
 	Encoder encoder(width, height, frameRate);
 	
@@ -65,15 +61,26 @@ int main(int argc, char **argv)
 			{
 				if (i >= argc - 1)
 				{
-					fprintf(stderr, "Expecting value for '%s'\n", arg);
+					fprintf(stderr, "ERROR: Expecting value for '%s'\n", arg);
 				}
 				else
 				{
-					fprintf(stderr, "Unknown option '%s'\n", arg);
+					fprintf(stderr, "ERROR: Unknown option '%s'\n", arg);
 				}
 			}
 		}
 	}
+	
+	if (screen.getWaveCount() == 0)
+	{
+		fprintf(stderr, "ERROR: No waves specified on command line\n");
+		return 1;
+	}
+	
+	SDL_Init(SDL_INIT_VIDEO);
+	
+	SDL_Surface *surface = SDL_CreateRGBSurface(0, width, height, 32, 0xff, 0xff00, 0xff0000, 0);
+	SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 	
 	encoder.initEncoder(filename);
 	
@@ -91,7 +98,7 @@ int main(int argc, char **argv)
 		++frame;
 	}
 	
-	printf("\n");
+	printf("\nDone.\n");
 	
 	encoder.deinitEncoder();
 	
