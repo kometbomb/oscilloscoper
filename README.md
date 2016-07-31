@@ -32,4 +32,4 @@ Set y-coordinate scaling for the following .WAV file. Can be independently set f
 
 ```oscilloscoper -output MyVideo.h264 -fps 50 -yscale 0.5 wav1.wav -yscale 2.5 wav2.wav```
 
-This will read ```wav1.wav``` and ```wav2.wav```, scale down the first file by 50 %, 2.5x the second file scaling. The resulting video stream ```MyVideo.h264``` will use the default dimensions (1920x1080), the default bitrate (8 Mb/s). The frame rate will be 50 frames per second.
+This will read ```wav1.wav``` and ```wav2.wav```, scale down the first file to 50 % and scale the second file to 250 %. The resulting video stream ```MyVideo.h264``` will use the default dimensions (1920x1080), the default bitrate (8 Mb/s). The frame rate will be 50 frames per second.
