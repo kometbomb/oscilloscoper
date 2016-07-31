@@ -8,7 +8,7 @@ Creates oscilloscope videos from WAV files. Multiple files can be simultaneously
 
 ##Input files
 
-Oscilloscoper reads normal PCM RIFF wave files. Stereo files will be reduced into mono files.
+Oscilloscoper reads normal PCM RIFF wave files. Stereo files will be reduced into mono files. Oscilloscoper tries to center the current oscilloscope display to zero crossings. For more complex input (with noise etc.) you can use the filtering options to try to stabilize the display.
 
 ##Command line options
 
@@ -25,11 +25,24 @@ Set output stream frame rate. Default is 60 FPS.
 ```-bitrate <Bits per second>```
 Set output stream bitrate. Default is 8000000.
 
+###Options for input files
+
+The following options apply to each input file specified after the option.
+
 ```-yscale <Scale>```
-Set y-coordinate scaling for the following .WAV file. Can be independently set for each input .WAV file that follow this option. Default is 1.0.
+Set y-coordinate scaling for the following input files. Can be independently set for each input .WAV file that follow this option. Default is 1.0.
+
+```-filter <Center frequency>```
+Enable filter for the following input files and set the bandpass filter center frequency. Filter is disabled by default.
+
+```-bandwidth <Center frequency>```
+Enable filter for the following input files and set the bandpass bandwidth. Filter is disabled by default. Default value is 50 Hz.
+
+```-nofilter ```
+Disable filtering for the following input files. Filter is disabled by default.
 
 ###Example
 
-```oscilloscoper -output MyVideo.h264 -fps 50 -yscale 0.5 wav1.wav -yscale 2.5 wav2.wav```
+```oscilloscoper -output MyVideo.h264 -fps 50 -yscale 0.5 wav1.wav -yscale 2.5 wav2.wav wav3.wav```
 
-This will read ```wav1.wav``` and ```wav2.wav```, scale down the first file to 50 % and scale the second file to 250 %. The resulting video stream ```MyVideo.h264``` will use the default dimensions (1920x1080), the default bitrate (8 Mb/s). The frame rate will be 50 frames per second.
+This will read ```wav1.wav``` and ```wav2.wav```, scale down the first file to 50 % and scale the second and the third file to 250 %. The resulting video stream ```MyVideo.h264``` will use the default dimensions (1920x1080), the default bitrate (8 Mb/s). The frame rate will be 50 frames per second.
