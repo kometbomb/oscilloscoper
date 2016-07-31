@@ -15,7 +15,7 @@ class Screen
 public:
 	Screen(int width, int height);
 	~Screen();
-	void addWave(const char *filename, float yScale);
+	void addWave(const char *filename, float yScale, float filterCenterFreq = -1, float filterBandwidth = -1);
 	int getWaveCount() const;
 	void setMargin(int margin);
 	void setWidth(int width);

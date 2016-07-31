@@ -9,6 +9,9 @@ int main(int argc, char **argv)
 	int height = 1080;
 	int frameRate = 60;
 	float yScale = 1.0f;
+	bool filterEnabled = false;
+	float filterCenterFreq = 400;
+	float filterBandwidth = 50;
 	char filename[1000] = "Output.h264";
 	
 	Screen screen(width, height);
@@ -20,7 +23,16 @@ int main(int argc, char **argv)
 		
 		if (arg[0] != '-')
 		{
-			screen.addWave(arg, yScale);
+			if (filterEnabled)
+			{
+				screen.addWave(arg, yScale, filterCenterFreq, filterBandwidth);
+				printf("Added wave %s, scaling by %.1f, filter at %.1f Hz, bandwidth %.1f Hz\n", arg, yScale, filterCenterFreq, filterBandwidth);
+			}
+			else
+			{
+				screen.addWave(arg, yScale);
+				printf("Added wave %s, scaling by %.1f, no filter\n", arg, yScale);
+			}
 		}
 		else
 		{
@@ -57,6 +69,22 @@ int main(int argc, char **argv)
 				encoder.setFramerate(frameRate);
 				++i;
 			}
+			else if (strcmp(arg, "-filter") == 0 && i < argc - 1)
+			{
+				filterEnabled = true;
+				filterCenterFreq = atof(argv[i + 1]);
+				++i;
+			}
+			else if (strcmp(arg, "-nofilter") == 0)
+			{
+				filterEnabled = false;
+			}
+			else if (strcmp(arg, "-bandwidth") == 0 && i < argc - 1)
+			{
+				filterEnabled = true;
+				filterBandwidth = atof(argv[i + 1]);
+				++i;
+			}
 			else
 			{
 				if (i >= argc - 1)
@@ -83,6 +111,8 @@ int main(int argc, char **argv)
 	SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 	
 	encoder.initEncoder(filename);
+	
+	printf("Rendering %dx%d/%d FPS video to %s\n", width, height, frameRate, filename);
 	
 	int frame = 0;
 	

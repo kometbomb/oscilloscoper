@@ -4,12 +4,11 @@
 #include <algorithm>
 
 Oscilloscope::Oscilloscope(const Wave& wave, int windowSizeMs, float yScale)
-	: mWave(wave), mResolution(0), mYScale(yScale)
+	: mWave(wave), mResolution(0), mYScale(yScale), mFilterEnabled(false), mFilterCenterFreq(400), mFilterBandwidth(50)
 {
 	mWindowSize = (float)wave.getSampleRate() * windowSizeMs / 1000;
 	mResolution = mWindowSize;
 	mFilterBuffer = new float[mWindowSize * 2];
-	mFilter.setup(3, mWave.getSampleRate(), 300, 200, 1);
 }
 
 
@@ -25,7 +24,7 @@ void Oscilloscope::draw(int position, SDL_Renderer *renderer, const SDL_Rect& ar
 	int lookback = 0;
 	int bufferPosition = mWindowSize;
 
-	if (false)
+	if (mFilterEnabled)
 	{
 		for (int i = 0 ; i < mWindowSize * 2 ; ++i)
 			mFilterBuffer[i] = mWave.get(position + i - mResolution / 2);
@@ -100,3 +99,14 @@ const Wave& Oscilloscope::getWave() const
 {
 	return mWave;
 }
+
+
+void Oscilloscope::setFilter(float centerFreq, float bandwidth)
+{
+	mFilterEnabled = true;
+	mFilterCenterFreq = centerFreq;
+	mFilterBandwidth = bandwidth;
+	
+	mFilter.setup(3, mWave.getSampleRate(), mFilterCenterFreq, mFilterBandwidth, 1);
+}
+	

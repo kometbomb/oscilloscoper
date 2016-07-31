@@ -19,12 +19,18 @@ Screen::~Screen()
 }
 
 
-void Screen::addWave(const char *filename, float yScale)
+void Screen::addWave(const char *filename, float yScale, float filterCenterFreq, float filterBandwidth)
 {
 	Wave *wave = new Wave();
 	wave->load(filename);
 	mWaves.push_back(wave);
-	mOscilloscopes.push_back(new Oscilloscope(*wave, 100, yScale));
+	
+	Oscilloscope *osc = new Oscilloscope(*wave, 100, yScale);
+	
+	if (filterCenterFreq >= 0.0f)
+		osc->setFilter(filterCenterFreq, filterBandwidth);
+	
+	mOscilloscopes.push_back(osc);
 }
 
 void Screen::setMargin(int margin)

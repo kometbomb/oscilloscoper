@@ -14,11 +14,14 @@ class Oscilloscope
 	int mWindowSize;
 	float *mFilterBuffer;
 	float mYScale;
+	bool mFilterEnabled;
+	float mFilterCenterFreq, mFilterBandwidth;
 	Dsp::SimpleFilter<Dsp::ChebyshevI::BandPass<3>,1> mFilter;
 	
 public:
 	Oscilloscope(const Wave& wave, int windowSizeMs, float yScale);
 	~Oscilloscope();
+	void setFilter(float centerFreq, float bandwidth);
 	const Wave& getWave() const;
 	void draw(int position, SDL_Renderer *renderer, const SDL_Rect& area);
 };
