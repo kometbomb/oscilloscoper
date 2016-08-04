@@ -6,6 +6,11 @@ Creates oscilloscope videos from WAV files. Multiple files can be simultaneously
 
 ```oscilloscoper.exe WavFile1.wav WavFile2.wav ...```
 
+###Muxing with ffmpeg
+
+```oscilloscoper -fps 50 Input.wav```
+```ffmpeg -i Input.wav -r 50 -i Output.h264 -vcodec copy Output.mp4```
+
 ##Input files
 
 Oscilloscoper reads normal PCM RIFF wave files. Stereo files will be reduced into mono files. Oscilloscoper tries to center the current oscilloscope display to zero crossings. For more complex input (with noise etc.) you can use the filtering options to try to stabilize the display.
