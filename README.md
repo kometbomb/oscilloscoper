@@ -8,8 +8,10 @@ Creates oscilloscope videos from WAV files. Multiple files can be simultaneously
 
 ###Muxing with ffmpeg
 
-```oscilloscoper -fps 50 Input.wav```
-```ffmpeg -i Input.wav -r 50 -i Output.h264 -vcodec copy Output.mp4```
+```
+oscilloscoper -fps 50 Input.wav
+ffmpeg -i Input.wav -r 50 -i Output.h264 -vcodec copy Output.mp4
+```
 
 ##Input files
 
