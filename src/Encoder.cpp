@@ -44,7 +44,7 @@ void Encoder::writeFrame(SDL_Surface *data)
 	/* encode the image */
 	ret = avcodec_encode_video2(mCodecContext, &mPacket, mFrame, &got_output);
 	if (ret < 0) {
-		fprintf(stderr, "Error encoding frame\n");
+		fprintf(stderr, "ERROR: Error encoding frame\n");
 		exit(1);
 	}
 	if (got_output) {
@@ -70,12 +70,12 @@ void Encoder::initEncoder(const char *filename)
     /* find the mpeg1 video encoder */
     codec = avcodec_find_encoder(codec_id);
     if (!codec) {
-        fprintf(stderr, "Codec not found\n");
+        fprintf(stderr, "ERROR: Codec not found\n");
         exit(1);
     }
     mCodecContext = avcodec_alloc_context3(codec);
     if (!mCodecContext) {
-        fprintf(stderr, "Could not allocate video codec context\n");
+        fprintf(stderr, "ERROR: Could not allocate video codec context\n");
         exit(1);
     }
 	
@@ -93,17 +93,17 @@ void Encoder::initEncoder(const char *filename)
         av_opt_set(mCodecContext->priv_data, "preset", "slow", 0);
     /* open it */
     if (avcodec_open2(mCodecContext, codec, NULL) < 0) {
-        fprintf(stderr, "Could not open codec\n");
+        fprintf(stderr, "ERROR: Could not open codec\n");
         exit(1);
     }
     mOutputFile = fopen(filename, "wb");
     if (!mOutputFile) {
-        fprintf(stderr, "Could not open %s\n", filename);
+        fprintf(stderr, "ERROR: Could not open %s\n", filename);
         exit(1);
     }
     mFrame = av_frame_alloc();
     if (!mFrame) {
-        fprintf(stderr, "Could not allocate video frame\n");
+        fprintf(stderr, "ERROR: Could not allocate video frame\n");
         exit(1);
     }
     mFrame->format = mCodecContext->pix_fmt;
@@ -114,7 +114,7 @@ void Encoder::initEncoder(const char *filename)
     int ret = av_image_alloc(mFrame->data, mFrame->linesize, mCodecContext->width, mCodecContext->height,
                          mCodecContext->pix_fmt, 32);
     if (ret < 0) {
-        fprintf(stderr, "Could not allocate raw picture buffer\n");
+        fprintf(stderr, "ERROR: Could not allocate raw picture buffer\n");
         exit(1);
     }
 	
@@ -129,7 +129,7 @@ void Encoder::deinitEncoder()
     for (got_output = 1; got_output; mFrameNumber++) {
         int ret = avcodec_encode_video2(mCodecContext, &mPacket, NULL, &got_output);
         if (ret < 0) {
-            fprintf(stderr, "Error encoding frame\n");
+            fprintf(stderr, "ERROR: Error encoding frame\n");
             exit(1);
         }
         if (got_output) {
