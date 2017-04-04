@@ -2,22 +2,24 @@
 
 Creates oscilloscope videos from WAV files. Multiple files can be simultaneously rendered in the same video. Output is a raw H.264 stream. You need to use e.g. ffmpeg to mux the video stream with the audio in a playable container like MP4.
 
-##Usage
+## Usage
 
-```oscilloscoper.exe WavFile1.wav WavFile2.wav ...```
+```
+oscilloscoper.exe WavFile1.wav WavFile2.wav ...
+```
 
-###Muxing with ffmpeg
+### Muxing with ffmpeg
 
 ```
 oscilloscoper -fps 50 Input.wav
 ffmpeg -i Input.wav -r 50 -i Output.h264 -vcodec copy Output.mp4
 ```
 
-##Input files
+## Input files
 
 Oscilloscoper reads normal PCM RIFF wave files. Stereo files will be reduced into mono files. Oscilloscoper tries to center the current oscilloscope display to zero crossings. For more complex input (with noise etc.) you can use the filtering options to try to stabilize the display.
 
-##Command line options
+## Command line options
 
 ```-output <Filename>```
 Set output filename. Default is Output.h264.
@@ -32,7 +34,7 @@ Set output stream frame rate. Default is 60 FPS.
 ```-bitrate <Bits per second>```
 Set output stream bitrate. Default is 8000000.
 
-###Options for input files
+### Options for input files
 
 The following options apply to each input file specified after the option.
 
@@ -48,7 +50,7 @@ Enable filter for the following input files and set the bandpass bandwidth. Filt
 ```-nofilter ```
 Disable filtering for the following input files. Filter is disabled by default.
 
-###Example
+### Example
 
 ```oscilloscoper -output MyVideo.h264 -fps 50 -yscale 0.5 wav1.wav -yscale 2.5 wav2.wav wav3.wav```
 
