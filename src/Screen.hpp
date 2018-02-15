@@ -6,7 +6,7 @@ class Wave;
 class Oscilloscope;
 class SDL_Renderer;
 
-class Screen 
+class Screen
 {
 	std::vector<Wave*> mWaves;
 	std::vector<Oscilloscope*> mOscilloscopes;
@@ -15,7 +15,7 @@ class Screen
 public:
 	Screen(int width, int height);
 	~Screen();
-	void addWave(const char *filename, float yScale, float filterCenterFreq = -1, float filterBandwidth = -1);
+	bool addWave(const char *filename, int waveChannel, float yScale, float filterCenterFreq = -1, float filterBandwidth = -1);
 	int getWaveCount() const;
 	void setMargin(int margin);
 	void setWidth(int width);

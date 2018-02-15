@@ -13,24 +13,30 @@ Screen::~Screen()
 {
 	for (std::vector<Oscilloscope*>::iterator i = mOscilloscopes.begin() ; i != mOscilloscopes.end() ; ++i)
 		delete *i;
-	
+
 	for (std::vector<Wave*>::iterator i = mWaves.begin() ; i != mWaves.end() ; ++i)
 		delete *i;
 }
 
 
-void Screen::addWave(const char *filename, float yScale, float filterCenterFreq, float filterBandwidth)
+bool Screen::addWave(const char *filename, int waveChannel, float yScale, float filterCenterFreq, float filterBandwidth)
 {
 	Wave *wave = new Wave();
-	wave->load(filename);
-	mWaves.push_back(wave);
-	
-	Oscilloscope *osc = new Oscilloscope(*wave, 100, yScale);
-	
-	if (filterCenterFreq >= 0.0f)
-		osc->setFilter(filterCenterFreq, filterBandwidth);
-	
-	mOscilloscopes.push_back(osc);
+	if (wave->load(filename, waveChannel))
+	{
+		mWaves.push_back(wave);
+
+		Oscilloscope *osc = new Oscilloscope(*wave, 100, yScale);
+
+		if (filterCenterFreq >= 0.0f)
+			osc->setFilter(filterCenterFreq, filterBandwidth);
+
+		mOscilloscopes.push_back(osc);
+
+		return true;
+	}
+
+	return false;
 }
 
 void Screen::setMargin(int margin)
@@ -55,11 +61,11 @@ const float Screen::getLengthMs() const
 void Screen::draw(float positionMs, SDL_Renderer *renderer)
 {
 	int y = 0;
-	
+
 	for (std::vector<Oscilloscope*>::const_iterator i = mOscilloscopes.begin() ; i != mOscilloscopes.end() ; ++i)
 	{
 		SDL_Rect area = {0, y * mHeight / mOscilloscopes.size(), mWidth, mHeight / mOscilloscopes.size()};
-		(*i)->draw(positionMs * (*i)->getWave().getSampleRate() / 1000, renderer, area); 
+		(*i)->draw(positionMs * (*i)->getWave().getSampleRate() / 1000, renderer, area);
 		++y;
 	}
 }

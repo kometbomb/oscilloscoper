@@ -22,7 +22,7 @@ Wave::~Wave()
 }
 
 
-bool Wave::load(const char *filename)
+bool Wave::load(const char *filename, int channel)
 {
 	FILE *f = fopen(filename, "rb");
 
@@ -71,6 +71,15 @@ bool Wave::load(const char *filename)
 		return false;
 	}
 
+	int nChannels = WAVE.nChannels;
+	int bitsPerSample = WAVE.wBitsPerSample;
+
+	if (channel >= nChannels)
+	{
+		fclose(f);
+		return false;
+	}
+
 	fseek(f, beginning_of_WAVE + WAVE.c.cksize + 8, SEEK_SET);
 
 	Chunk peek = { "", 0 };
@@ -96,29 +105,34 @@ bool Wave::load(const char *filename)
 	mLength = peek.cksize / (WAVE.wBitsPerSample / 8) / WAVE.nChannels;
 	mSampleRate = WAVE.nSamplesPerSec;
 
-	int channels = WAVE.nChannels;
-	int bitsPerSample = WAVE.wBitsPerSample;
-
 	mSamples = new int[mLength];
 
 	const int bufferSize = 65536;
 
-	short *buffer = new short[bufferSize * channels];
+	short *buffer = new short[bufferSize * nChannels];
 	int totalRead = 0;
 
 	while (totalRead < mLength)
 	{
-		int readCount = fread(buffer, (bitsPerSample / 8 * channels), bufferSize, f);
+		int readCount = fread(buffer, (bitsPerSample / 8 * nChannels), bufferSize, f);
 
 		for (int i = 0 ; i < readCount ; ++i)
 		{
-			if (channels == 1)
+			if (nChannels == 1)
 			{
-				mSamples[totalRead + i] = buffer[i * channels];
+				mSamples[totalRead + i] = buffer[i * nChannels];
+			}
+			if (channel >= 0 && channel < nChannels)
+			{
+				mSamples[totalRead + i] = buffer[i * nChannels + channel];
 			}
 			else
 			{
-				mSamples[totalRead + i] = buffer[i * channels] + buffer[i * channels + 1];
+				// Mixdown
+				int total = 0;
+				for (int c = 0 ; c < nChannels ; ++c)
+					total += buffer[i * nChannels + c];
+				mSamples[totalRead + i] = total;
 			}
 		}
 
