@@ -55,6 +55,6 @@ Pick a single channel from the input file. Uses a mixdown of all channels by def
 
 ### Example
 
-```oscilloscoper -output MyVideo.h264 -fps 50 -yscale 0.5 wav1.wav -yscale 2.5 wav2.wav wav3.wav```
+```oscilloscoper -output MyVideo.h264 -fps 50 -yscale 0.5 wav1.wav -yscale 2.5 -channel 0 wav2.wav wav3.wav```
 
-This will read ```wav1.wav``` and ```wav2.wav```, scale down the first file to 50 % and scale the second and the third file to 250 %. The resulting video stream ```MyVideo.h264``` will use the default dimensions (1920x1080), the default bitrate (8 Mb/s). The frame rate will be 50 frames per second.
+This will read the mixdown of ```wav1.wav```, the first channel of ```wav2.wav```, the full mixdown of ```wav3.wav```, scale down the first file to 50 % and scale the second and the third file to 250 %. The resulting video stream ```MyVideo.h264``` will use the default dimensions (1920x1080), the default bitrate (8 Mb/s). The frame rate will be 50 frames per second.
