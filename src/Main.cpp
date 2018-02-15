@@ -37,15 +37,18 @@ int main(int argc, char **argv)
 					printf("Added wave %s (%s), scaling by %.1f, filter at %.1f Hz, bandwidth %.1f Hz\n",
 						arg, waveChannelName, yScale, filterCenterFreq, filterBandwidth);
 				else
-					printf("Could not open wave %s.\n", arg, yScale);
+					printf("Could not open wave %s.\n", arg);
 			}
 			else
 			{
 				if (screen.addWave(arg, waveChannel, yScale))
 					printf("Added wave %s (%s), scaling by %.1f, no filter\n", arg, waveChannelName, yScale);
 				else
-					printf("Could not open wave %s.\n", arg, yScale);
+					printf("Could not open wave %s.\n", arg);
 			}
+
+			// Reset to default for the next input file
+			waveChannel = -1;
 		}
 		else
 		{

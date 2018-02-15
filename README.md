@@ -50,6 +50,9 @@ Enable filter for the following input files and set the bandpass bandwidth. Filt
 ```-nofilter ```
 Disable filtering for the following input files. Filter is disabled by default.
 
+```-channel <channel>```
+Pick a single channel from the input file. Uses a mixdown of all channels by default. Note: this option is reset to the default setting after each input file.
+
 ### Example
 
 ```oscilloscoper -output MyVideo.h264 -fps 50 -yscale 0.5 wav1.wav -yscale 2.5 wav2.wav wav3.wav```
